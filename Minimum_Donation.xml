@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<hookexport>
+  <hookdata>
+    <config>
+      <hook_name>Nexus Minimum Donation</hook_name>
+      <hook_desc>Allows you to set a minimum donation for nexus donation goals</hook_desc>
+      <hook_author>Adam Lavin</hook_author>
+      <hook_email>adam@lavoaster.co.uk</hook_email>
+      <hook_website>http://www.lavoaster.co.uk</hook_website>
+      <hook_update_check>http://www.lavoaster.co.uk/update.php?app=nexusmindonation</hook_update_check>
+      <hook_requirements><![CDATA[a:3:{s:21:"required_applications";a:0:{}s:20:"hook_php_version_min";s:0:"";s:20:"hook_php_version_max";s:0:"";}]]></hook_requirements>
+      <hook_version_human>1.0.0</hook_version_human>
+      <hook_version_long>10000</hook_version_long>
+      <hook_extra_data><![CDATA[a:2:{s:7:"display";a:1:{s:8:"settings";s:33:"Settings: Minimum Donation Amount";}s:8:"settings";a:1:{s:0:"";s:22:"nexus_minimum_donation";}}]]></hook_extra_data>
+      <hook_key>minDonationNexus</hook_key>
+      <hook_global_caches/>
+    </config>
+  </hookdata>
+  <hookfiles>
+    <file>
+      <hook_file_real>minDonation.php</hook_file_real>
+      <hook_type>commandHooks</hook_type>
+      <hook_classname>minDonation</hook_classname>
+      <hook_data><![CDATA[a:8:{s:12:"dataLocation";s:0:"";s:14:"libApplication";s:0:"";s:15:"classToOverload";s:28:"public_nexus_payments_donate";s:9:"skinGroup";N;s:12:"skinFunction";N;s:4:"type";N;s:2:"id";N;s:8:"position";N;}]]></hook_data>
+      <hooks_source><![CDATA[<?php
+class minDonation extends (~extends~)
+{
+    public function doExecute( ipsRegistry $registry )
+    {
+        if($this->request['amount'] < ipsRegistry::$settings['nexus_minimum_donation']){
+            $this->registry->output->showError('Minimum donation amount is at least '.ipsRegistry::$settings['nexus_minimum_donation'].' '.ipsRegistry::$settings['nexus_currency'], '10X' );
+            return;
+        }
+        parent::doExecute($registry);
+    }         
+}
+?>]]></hooks_source>
+    </file>
+  </hookfiles>
+  <hookextras_settings>
+    <setting>
+      <conf_is_title>1</conf_is_title>
+      <conf_title_title><![CDATA[Store &amp; Client Area]]></conf_title_title>
+      <conf_title_desc>Control settings for the store, the client area and handling orders</conf_title_desc>
+      <conf_title_noshow>0</conf_title_noshow>
+      <conf_title_keyword>nexus_store</conf_title_keyword>
+      <conf_title_app>nexus</conf_title_app>
+      <conf_title_tab>Nexus</conf_title_tab>
+    </setting>
+    <setting>
+      <conf_id>411</conf_id>
+      <conf_title>Minimum Donation Amount</conf_title>
+      <conf_description><![CDATA[If specified, users will not be able to make an donation under the total amount of this value.<br />
+Leave blank to not require a minimum order amount.]]></conf_description>
+      <conf_group>41</conf_group>
+      <conf_type>input</conf_type>
+      <conf_key>nexus_minimum_donation</conf_key>
+      <conf_value/>
+      <conf_default>0</conf_default>
+      <conf_extra>0</conf_extra>
+      <conf_evalphp/>
+      <conf_protected>1</conf_protected>
+      <conf_position>12</conf_position>
+      <conf_start_group/>
+      <conf_add_cache>1</conf_add_cache>
+      <conf_keywords/>
+      <conf_title_keyword>nexus_store</conf_title_keyword>
+      <conf_is_title>0</conf_is_title>
+    </setting>
+  </hookextras_settings>
+  <hookextras_language/>
+  <hookextras_modules/>
+  <hookextras_help/>
+  <hookextras_templates/>
+  <hookextras_css/>
+  <hookextras_replacements/>
+  <hookextras_tasks/>
+  <hookextras_database_create/>
+  <hookextras_database_alter/>
+  <hookextras_database_update/>
+  <hookextras_database_insert/>
+</hookexport>
